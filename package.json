@@ -12,20 +12,32 @@
     "clean": "rm -rf dist",
     "prestart": "npm run build",
     "start": "func start",
+    "docker:up": "docker-compose up -d postgres",
+    "docker:down": "docker-compose down postgres",
+    "docker:logs": "docker-compose logs -f postgres",
+    "upload:blob": "tsx src/utils/uploadToBlob.ts",
+    "upload:sample": "tsx src/utils/uploadToBlob.ts samples/budget-sample.csv",
     "migrate:local:create": "DATABASE_URL=postgresql://postgres:postgres@localhost:5432/budgetdb node-pg-migrate create",
     "migrate:local:up": "DATABASE_URL=postgresql://postgres:postgres@localhost:5432/budgetdb node-pg-migrate up",
     "migrate:local:down": "DATABASE_URL=postgresql://postgres:postgres@localhost:5432/budgetdb node-pg-migrate down",
     "migrate:remote:up": "node-pg-migrate up",
     "migrate:remote:down": "node-pg-migrate down"
   },
-  "keywords": ["azure-functions", "blob-trigger", "postgresql", "budget-tracking"],
+  "keywords": [
+    "azure-functions",
+    "blob-trigger",
+    "postgresql",
+    "budget-tracking"
+  ],
   "author": "",
   "license": "ISC",
   "devDependencies": {
     "@azure/functions": "^4.11.2",
+    "@azure/storage-blob": "^12.31.0",
     "@types/node": "^25.3.0",
     "@types/pg": "^8.16.0",
     "node-pg-migrate": "^8.0.4",
+    "tsx": "^4.21.0",
     "typescript": "^5.9.3"
   },
   "dependencies": {

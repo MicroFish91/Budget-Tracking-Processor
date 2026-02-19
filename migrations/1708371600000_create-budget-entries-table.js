@@ -34,9 +34,8 @@ exports.up = (pgm) => {
   pgm.createIndex('budget_entries', 'category');
   pgm.createIndex('budget_entries', 'entry_type');
   
-  pgm.addConstraint('budget_entries', 'check_entry_type', {
-    check: "entry_type IN ('income', 'expense')"
-  });
+  // Use raw SQL to avoid IF NOT EXISTS syntax error
+  pgm.sql("ALTER TABLE budget_entries ADD CONSTRAINT check_entry_type CHECK (entry_type IN ('income', 'expense'))");
 };
 
 exports.down = (pgm) => {

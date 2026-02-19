@@ -68,6 +68,31 @@ npm install
 
 ### 2. Local Development
 
+Start the local development environment:
+
+```bash
+# Start PostgreSQL
+npm run docker:up
+
+# Run database migrations
+npm run migrate:local:up
+
+# Start Azure Functions (Azurite starts automatically)
+npm start
+```
+
+In another terminal, upload a test file:
+
+```bash
+# Upload the sample CSV file
+npm run upload:sample
+
+# Or upload any file
+npm run upload:blob path/to/your/file.csv
+```
+
+The blob upload utility will automatically create the `budget-files` container in Azurite and trigger your function.
+
 See [docs/NEXT-STEPS.md](./docs/NEXT-STEPS.md) for detailed local debugging instructions.
 
 ### 3. Deploy to Azure
@@ -107,12 +132,14 @@ date,category,description,amount,type
 ```
 .
 ├── src/
-│   └── functions/
-│       └── processBudgetFile.ts    # Main blob trigger function
+│   ├── functions/
+│   │   └── processBudgetFile.ts    # Main blob trigger function
+│   └── utils/
+│       └── uploadToBlob.ts         # Blob upload utility
 ├── migrations/                      # Database migrations
 ├── infra/                          # Bicep infrastructure templates
 ├── samples/                        # Sample CSV/Excel files
-├── docker-compose.yml              # Local dev services
+├── docker-compose.yml              # Local PostgreSQL service
 ├── azure.yaml                      # Azure Developer CLI config
 └── local.settings.json             # Local configuration
 ```
@@ -124,6 +151,15 @@ npm run build              # Compile TypeScript
 npm run watch              # Watch mode for development
 npm start                  # Start Azure Functions locally
 npm run clean              # Clean build output
+
+# Docker services
+npm run docker:up          # Start PostgreSQL in Docker
+npm run docker:down        # Stop PostgreSQL
+npm run docker:logs        # View PostgreSQL logs
+
+# Blob upload utilities
+npm run upload:sample      # Upload sample CSV to Azurite
+npm run upload:blob <path> # Upload any file to Azurite
 
 # Database migrations
 npm run migrate:local:up      # Run migrations locally
