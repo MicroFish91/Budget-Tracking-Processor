@@ -1,0 +1,26 @@
+# yaml-language-server: $schema=https://raw.githubusercontent.com/Azure/azure-dev/main/schemas/v1.0/azure.yaml.json
+
+name: blob-trigger-node
+metadata:
+  template: blob-trigger-node
+
+services:
+  api:
+    project: .
+    language: ts
+    host: function
+
+hooks:
+  postprovision:
+    windows:
+      shell: pwsh
+      run: |
+        $env:DATABASE_URL = azd env get-value DATABASE_URL
+        npm run migrate:remote:up
+      continueOnError: false
+    posix:
+      shell: sh
+      run: |
+        export DATABASE_URL=$(azd env get-value DATABASE_URL)
+        npm run migrate:remote:up
+      continueOnError: false
