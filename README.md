@@ -49,64 +49,13 @@ CREATE TABLE budget_entries (
 );
 ```
 
-## Prerequisites
+## Dependencies
 
 - [Node.js 20+](https://nodejs.org/)
 - [Azure Functions Core Tools v4](https://learn.microsoft.com/azure/azure-functions/functions-run-local)
 - [Azure Developer CLI (azd)](https://learn.microsoft.com/azure/developer/azure-developer-cli/install-azd)
 - [Docker Desktop](https://www.docker.com/products/docker-desktop/) (for local development)
 - [Azure subscription](https://azure.microsoft.com/free/)
-
-## Quick Start
-
-### 1. Clone and Install
-
-```bash
-cd blob-trigger-node
-npm install
-```
-
-### 2. Local Development
-
-Start the local development environment:
-
-```bash
-# Start PostgreSQL
-npm run docker:up
-
-# Run database migrations
-npm run migrate:local:up
-
-# Start Azure Functions (Azurite starts automatically)
-npm start
-```
-
-In another terminal, upload a test file:
-
-```bash
-# Upload the sample CSV file
-npm run upload:sample
-
-# Or upload any file
-npm run upload:blob path/to/your/file.csv
-```
-
-The blob upload utility will automatically create the `budget-files` container in Azurite and trigger your function.
-
-See [docs/NEXT-STEPS.md](./docs/NEXT-STEPS.md) for detailed local debugging instructions.
-
-### 3. Deploy to Azure
-
-```bash
-# Initialize azd environment
-azd auth login
-azd init
-
-# Provision and deploy
-azd up
-```
-
-See [docs/NEXT-STEPS.md](./docs/NEXT-STEPS.md) for detailed deployment instructions.
 
 ## File Format
 
@@ -131,9 +80,10 @@ date,category,description,amount,type
 
 ```
 .
+├── functions/
+│   └── processBudgetFile.ts        # Main blob trigger function
 ├── src/
-│   ├── functions/
-│   │   └── processBudgetFile.ts    # Main blob trigger function
+│   ├── functions/                   # TypeScript source
 │   └── utils/
 │       └── uploadToBlob.ts         # Blob upload utility
 ├── migrations/                      # Database migrations
@@ -167,47 +117,3 @@ npm run migrate:local:down    # Rollback locally
 npm run migrate:local:create  # Create new migration
 npm run migrate:remote:up     # Run migrations on Azure
 ```
-
-## Environment Variables
-
-### Local Development
-Configured in `local.settings.json`:
-- `DATABASE_URL`: PostgreSQL connection string
-- `AzureWebJobsStorage`: Azurite connection
-- `FUNCTIONS_WORKER_RUNTIME`: Set to "node"
-
-### Production (Azure)
-Automatically configured by Bicep templates:
-- `DATABASE_URL`: Azure PostgreSQL connection
-- `AzureWebJobsStorage`: Azure Storage connection
-- `APPLICATIONINSIGHTS_CONNECTION_STRING`: Monitoring
-
-## Monitoring
-
-Application telemetry is sent to Application Insights:
-- Function execution logs
-- Performance metrics
-- Error tracking
-- Custom events
-
-Access via Azure Portal → Your Function App → Application Insights
-
-## Contributing
-
-See [docs/plan.md](./docs/plan.md) for the implementation plan and architecture decisions.
-
-## License
-
-MIT
-
-## Next Steps
-
-For detailed instructions on debugging, deployment, and troubleshooting, see [docs/NEXT-STEPS.md](./docs/NEXT-STEPS.md).
-
-## Documentation
-
-- **[README.md](./README.md)** - This file, project overview
-- **[docs/NEXT-STEPS.md](./docs/NEXT-STEPS.md)** - Detailed debugging, deployment, and troubleshooting guide
-- **[docs/plan.md](./docs/plan.md)** - Implementation plan and architecture decisions
-- **[docs/samples-readme.md](./docs/samples-readme.md)** - Sample file format and testing instructions
-- **[docs/create-transcript.md](./docs/create-transcript.md)** - Complete project creation transcript

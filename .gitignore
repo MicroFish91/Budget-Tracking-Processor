@@ -30,7 +30,6 @@ dist
 .azure
 
 # IDE
-.vscode
 .idea
 *.swp
 *.swo
