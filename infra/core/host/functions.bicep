@@ -19,6 +19,11 @@ resource applicationInsights 'Microsoft.Insights/components@2020-02-02' existing
   name: applicationInsightsName
 }
 
+var customAppSettings = [for key in objectKeys(appSettings): {
+  name: key
+  value: appSettings[key]
+}]
+
 resource functionApp 'Microsoft.Web/sites@2022-03-01' = {
   name: name
   location: location
@@ -58,10 +63,7 @@ resource functionApp 'Microsoft.Web/sites@2022-03-01' = {
           name: 'APPLICATIONINSIGHTS_CONNECTION_STRING'
           value: applicationInsights.properties.ConnectionString
         }
-      ], [for key in objectKeys(appSettings): {
-        name: key
-        value: appSettings[key]
-      }])
+      ], customAppSettings)
     }
     httpsOnly: true
   }

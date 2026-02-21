@@ -5,8 +5,14 @@
 local.settings.json
 test
 tsconfig.json
-node_modules
 .azure
 docs
 migrations/*.ts
 src
+dist
+samples
+azd-*.log
+docker-compose.yml
+.env.example
+README.md
+infra

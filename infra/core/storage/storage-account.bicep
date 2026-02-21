@@ -11,12 +11,15 @@ param sku object = { name: 'Standard_LRS' }
 resource storage 'Microsoft.Storage/storageAccounts@2022-05-01' = {
   name: name
   location: location
-  tags: tags
+  tags: union(tags, {
+    'Az.Sec.DisableLocalAuth.Storage::Skip': 'true'
+  })
   kind: kind
   sku: sku
   properties: {
     minimumTlsVersion: minimumTlsVersion
     allowBlobPublicAccess: allowBlobPublicAccess
+    allowSharedKeyAccess: true
     networkAcls: {
       bypass: 'AzureServices'
       defaultAction: 'Allow'

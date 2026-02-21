@@ -2,7 +2,7 @@
   "name": "blob-trigger-node",
   "version": "1.0.0",
   "description": "Azure Functions app to process Excel/CSV files and store budget entries in PostgreSQL",
-  "main": "dist/src/functions/*.js",
+  "main": "functions/*.js",
   "directories": {
     "doc": "docs"
   },
@@ -10,6 +10,7 @@
     "build": "tsc",
     "watch": "tsc --watch",
     "clean": "rm -rf dist",
+    "package": "npm run clean && npm run build && cp host.json package.json package-lock.json dist/",
     "prestart": "npm run build",
     "start": "func start",
     "docker:up": "docker-compose up -d postgres",
