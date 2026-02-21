@@ -9,7 +9,6 @@ tsconfig.json
 docs
 migrations/*.ts
 src
-dist
 samples
 azd-*.log
 docker-compose.yml

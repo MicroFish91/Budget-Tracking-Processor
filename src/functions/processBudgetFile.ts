@@ -1,4 +1,4 @@
-import { app, InvocationContext } from '@azure/functions';
+import { InvocationContext, app } from '@azure/functions';
 import { Readable } from 'stream';
 import * as XLSX from 'xlsx';
 import csv from 'csv-parser';
